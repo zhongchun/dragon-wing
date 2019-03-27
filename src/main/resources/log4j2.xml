@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <!-- Log4j 2.x 配置文件。每60秒自动检查和应用配置文件的更新； -->
-<Configuration status="trace" monitorInterval="60"
-               strict="true" schema="Log4J-V2.2.xsd">
+<xml status="trace" monitorInterval="60"
+     strict="true" schema="Log4J-V2.2.xsd">
 
     <properties>
         <property name="LOG_HOME">logs</property>
@@ -50,4 +50,4 @@
         </Root>
     </Loggers>
 
-</Configuration>
+</xml>

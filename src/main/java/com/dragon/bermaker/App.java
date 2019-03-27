@@ -18,6 +18,7 @@ public class App {
     private static final Logger LOG = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
+        LOG.info("args num={}, args1={}, args2={}", args.length, args[0], args[1]);
         LOG.info("Hi, dragon wing!");
     }
 }
