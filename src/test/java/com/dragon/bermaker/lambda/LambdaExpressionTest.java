@@ -6,7 +6,10 @@ package com.dragon.bermaker.lambda;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.IntSummaryStatistics;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -146,7 +149,8 @@ public class LambdaExpressionTest {
                 "Roger Federer", "Andy Murray",
                 "Tomas Berdych", "Juan Martin Del Potro",
                 "Richard Gasquet", "John Isner"};
-        Comparator<String> sortByName = (String s1, String s2) -> (s1.compareTo(s2));
+        Comparator<String> sortByName = Comparator.comparing(s -> s);
+        // (String s1, String s2) -> (s1.compareTo(s2));
         Arrays.sort(atp, sortByName);
         List<String> players = Arrays.asList(atp);
         for (String player : players) {
@@ -156,7 +160,7 @@ public class LambdaExpressionTest {
     }
 
     @Test
-    public void testLambdaStream() {
+    public void testStreams() {
         // list all the programmers
         System.out.println("All programmers: ");
         javaProgrammers.forEach((p) -> System.out.printf("%s %s; ", p.getFirstName(), p.getLastName()));
@@ -197,12 +201,49 @@ public class LambdaExpressionTest {
         System.out.println("The first 3 female Java programmers: ");
         javaProgrammers.stream().filter(genderFilter).limit(3).forEach((p) -> System.out.println(p));
 
-        // Sort
+        // Sort by first name
         System.out.println("Sorted by name: ");
         List<Person> sortedJavaProgrammers =
-                javaProgrammers.stream().sorted((p1, p2) -> (p1.getFirstName().compareTo(p2.getFirstName())))
+                javaProgrammers.stream().sorted(Comparator.comparing(Person::getFirstName))
                         .limit(5).collect(Collectors.toList());
         sortedJavaProgrammers.forEach((p) -> System.out.println(p));
+
+        // Sort by salary
+        System.out.println("Sorted by salary:");
+        //        sortedJavaProgrammers = javaProgrammers.stream().sorted((p1, p2) -> (p1.getSalary() - p2.getSalary
+        //        ())).collect(
+        //                Collectors.toList());
+        sortedJavaProgrammers = javaProgrammers.stream().sorted(Comparator.comparing(Person::getSalary)).collect(
+                Collectors.toList());
+        sortedJavaProgrammers.forEach((p) -> System.out.println(p));
+
+        // Min salary java programmer
+        System.out.println("The lowest salary java programmer: ");
+        Person person = javaProgrammers.stream().min(Comparator.comparing(Person::getSalary)).get();
+        System.out.println(person);
+
+        // Map
+        System.out.println("Concat PHP programmers' first name: ");
+        String phpDevelopers = phpProgrammers.stream().map(Person::getFirstName).collect(Collectors.joining("; "));
+        System.out.println(phpDevelopers);
+        System.out.println("Put Java programmers' first name into a Set: ");
+        Set<String> javaDevFirstname = javaProgrammers.stream().map(Person::getFirstName).collect(Collectors.toSet());
+        System.out.println(javaDevFirstname);
+        System.out.println("Put Java programmers' last name into a TreeSet:");
+        TreeSet<String> javaDevLastName =
+                javaProgrammers.stream().map(Person::getLastName).collect(Collectors.toCollection(TreeSet::new));
+        System.out.println(javaDevLastName);
+
+        // Parallel
+        System.out.print("Calculte all the money to Java programmers: ");
+        int totalSalary = javaProgrammers.parallelStream().mapToInt((p) -> p.getSalary()).sum();
+        System.out.println(totalSalary);
+
+        // summaryStatistics
+        System.out.println("SummaryStatistics: ");
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        IntSummaryStatistics stats = numbers.stream().mapToInt(x -> x).summaryStatistics();
+        System.out.println(stats);
     }
 
 }

@@ -159,7 +159,7 @@ public final class Message {
     }
 
     /**
-     * Protobuf enum {@code Person.PhoneType}
+     * Protobuf enums {@code Person.PhoneType}
      */
     public enum PhoneType
         implements com.google.protobuf.ProtocolMessageEnum {
@@ -195,7 +195,7 @@ public final class Message {
       public final int getNumber() {
         if (this == UNRECOGNIZED) {
           throw new IllegalArgumentException(
-              "Can't get the number of an unknown enum value.");
+              "Can't get the number of an unknown enums value.");
         }
         return value;
       }
