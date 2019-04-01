@@ -15,11 +15,17 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.Chronology;
+import java.time.chrono.ThaiBuddhistDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Set;
 import java.util.TimeZone;
 
 import org.junit.Test;
@@ -213,5 +219,56 @@ public class DateTest {
         System.out.println(tz);
         GregorianCalendar gc = GregorianCalendar.from(gregorianCalendarDateTime);
         System.out.println(gc);
+    }
+
+    /**
+     * Lists today's date for all of the available calendars
+     */
+    @Test
+    public void testChronology() {
+        Set<Chronology> chronos = Chronology.getAvailableChronologies();
+        for (Chronology chrono : chronos) {
+            ChronoLocalDate date = chrono.dateNow();
+            System.out.printf("   %20s: %s%n", chrono.getId(), date.toString());
+        }
+        // Print the Thai Buddhist date
+        ChronoLocalDate now1 = Chronology.of("ThaiBuddhist").dateNow();
+        int day = now1.get(ChronoField.DAY_OF_MONTH);
+        int dow = now1.get(ChronoField.DAY_OF_WEEK);
+        int month = now1.get(ChronoField.MONTH_OF_YEAR);
+        int year = now1.get(ChronoField.YEAR);
+        System.out.printf("  Today is %s %s %d-%s-%d%n", now1.getChronology().getId(),
+                dow, day, month, year);
+        // Print today's date and the last day of the year for the Thai Buddhist Calendar.
+        ChronoLocalDate first = now1
+                .with(ChronoField.DAY_OF_MONTH, 1)
+                .with(ChronoField.MONTH_OF_YEAR, 1);
+        ChronoLocalDate last = first
+                .plus(1, ChronoUnit.YEARS)
+                .minus(1, ChronoUnit.DAYS);
+        System.out.printf("  %s: 1st of year: %s; end of year: %s%n", last.getChronology().getId(),
+                first, last);
+    }
+
+    @Test
+    public void testThaiBuddhistCalendar() {
+        // Print the Thai Buddhist date
+        ThaiBuddhistDate now1 = ThaiBuddhistDate.now();
+        int day = now1.get(ChronoField.DAY_OF_MONTH);
+        int dow = now1.get(ChronoField.DAY_OF_WEEK);
+        int month = now1.get(ChronoField.MONTH_OF_YEAR);
+        int year = now1.get(ChronoField.YEAR);
+        System.out.printf("  Today is %s %s %d-%s-%d%n", now1.getChronology().getId(),
+                dow, day, month, year);
+
+        // Print today's date and the last day of the year for the Thai Buddhist Calendar.
+        ThaiBuddhistDate first = now1
+                .with(ChronoField.DAY_OF_MONTH, 1)
+                .with(ChronoField.MONTH_OF_YEAR, 1);
+        ThaiBuddhistDate last = first
+                .plus(1, ChronoUnit.YEARS)
+                .minus(1, ChronoUnit.DAYS);
+        System.out.printf("  %s: 1st of year: %s; end of year: %s%n", last.getChronology().getId(),
+                first, last);
     }
 }
