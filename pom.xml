@@ -12,7 +12,7 @@
     <url>http://maven.apache.org</url>
     <name>${project.artifactId}</name>
     <!--建议结合实际情况调整工程描述 -->
-    <description>jdk源码研究</description>
+    <description>jdk sources</description>
 
     <properties>
         <junit.version>4.12</junit.version>
