@@ -22,11 +22,7 @@ public class CyclicBarrierExample implements Runnable {
     private static final int NUMBER_OF_THREADS = 5;
     private static AtomicInteger counter = new AtomicInteger();
     private static Random random = new Random(System.currentTimeMillis());
-    private static final CyclicBarrier barrier = new CyclicBarrier(5, new Runnable() {
-        public void run() {
-            counter.incrementAndGet();
-        }
-    });
+    private static final CyclicBarrier barrier = new CyclicBarrier(5, () -> counter.incrementAndGet());
 
     @Override
     public void run() {
