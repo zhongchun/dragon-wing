@@ -54,8 +54,8 @@ public class Person {
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", job='").append(job).append('\'');
         sb.append(", gender='").append(gender).append('\'');
-        sb.append(", salary=").append(salary);
         sb.append(", age=").append(age);
+        sb.append(", salary=").append(salary);
         sb.append('}');
         return sb.toString();
     }
